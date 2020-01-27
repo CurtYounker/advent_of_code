@@ -2,7 +2,7 @@ from treelib import Tree
 
 def main():
 
-	# Read input file and construct a Tree
+	# Read input orbit file and construct a Tree
 	orbits = parse_orbits_file()
 	orbital_tree = build_orbital_tree(orbits)
 
@@ -53,6 +53,8 @@ def get_path_to_santa(orbital_tree):
 	return path_to_santa
 
 
+##### Helper Methods #####
+
 '''This method takes a list of 'A)B' orbital pairs and returns a tree structure.
 While there is more than 1 subtree, we iterate over the subtrees and join them one by one.'''
 def build_orbital_tree(orbital_sub_trees):
@@ -80,8 +82,6 @@ def build_orbital_tree(orbital_sub_trees):
 
 	return orbital_tree
 
-
-##### Helper Methods #####
 # Parse orbits file into a list of orbital trees
 def parse_orbits_file():
 	orbits = []
