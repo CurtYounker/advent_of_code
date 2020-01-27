@@ -19,7 +19,7 @@ def main():
 
 ''' This method iterates over each node in the tree and cumulatively adds their depths.
 Is there a more efficient way to calculate the total number of orbits?'''
-def sum_orbits(orbital_tree):
+def sum_orbits(orbital_tree: Tree) -> int:
 
 	sum_total_orbits = 0
 
@@ -31,21 +31,18 @@ def sum_orbits(orbital_tree):
 
 ''' This method works by iteratively moving closer to the tree's root until Santa is seen
 on a sub tree branch. Then we take the path straight to him.'''
-def get_path_to_santa(orbital_tree):
+def get_path_to_santa(orbital_tree: Tree) -> list:
 
-	current_node = orbital_tree.parent('YOU')
-	traverasl_complete = False
 	path_to_santa = []
+	current_node = orbital_tree.parent('YOU')
+	traversal_complete = False
 
-	while not traverasl_complete:
+	while not traversal_complete:
 		if orbital_tree.subtree(current_node.identifier).contains('SAN'):
-			paths = orbital_tree.subtree(current_node.identifier).paths_to_leaves()
-			for path in paths:
+			for path in orbital_tree.subtree(current_node.identifier).paths_to_leaves():
 				if 'SAN' in path:
-
 					path_to_santa += path[:-1]
-
-			traverasl_complete = True
+					traversal_complete = True
 		else:
 			path_to_santa.append(current_node.identifier)
 			current_node = orbital_tree.parent(current_node.identifier)
@@ -57,13 +54,11 @@ def get_path_to_santa(orbital_tree):
 
 '''This method takes a list of 'A)B' orbital pairs and returns a tree structure.
 While there is more than 1 subtree, we iterate over the subtrees and join them one by one.'''
-def build_orbital_tree(orbital_sub_trees):
+def build_orbital_tree(orbital_sub_trees: list) -> Tree:
 
 	while len(orbital_sub_trees) > 1:
 		for comp_tree_1 in orbital_sub_trees:
-
-			index = orbital_sub_trees.index(comp_tree_1)
-			for comp_tree_2 in orbital_sub_trees[(index + 1):]:
+			for comp_tree_2 in orbital_sub_trees[(orbital_sub_trees.index(comp_tree_1) + 1):]:
 
 				if comp_tree_1.root in comp_tree_2:
 					for child in comp_tree_1.children(comp_tree_1.root):
@@ -82,17 +77,17 @@ def build_orbital_tree(orbital_sub_trees):
 
 	return orbital_tree
 
-# Parse orbits file into a list of orbital trees
-def parse_orbits_file():
+# Parse orbits file into a list of orbital Trees
+def parse_orbits_file() -> list:
 	orbits = []
 
-	with open('orbits.txt') as orbits_file:
+	with open('orbits_s.txt') as orbits_file:
 		orbits = [convert_to_tree(line) for line in orbits_file]
 
 	return orbits
 
 # Converts an 'A)B' string into a Tree object
-def convert_to_tree(line):
+def convert_to_tree(line: str) -> Tree:
 
 	center, orbital = line.strip().split(')')
 
@@ -101,6 +96,7 @@ def convert_to_tree(line):
 	new_tree.create_node(identifier = orbital, parent = new_tree.get_node(center))
 	
 	return new_tree
+
 
 if __name__ == '__main__':
 	main()
